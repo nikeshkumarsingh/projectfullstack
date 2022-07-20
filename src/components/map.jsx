@@ -1,29 +1,27 @@
 import { Box } from "@chakra-ui/react";
-import Geocode from "react-geocode";
+import { useState } from "react";
+
 
 export const Map = ({ lat, long }) => {
-    Geocode.setApiKey("AIzaSyA9_2X7a28z-Cs7dskkk2ODTyKtNwiatyc");
-    Geocode.setLanguage("en");
-    Geocode.fromLatLng(lat, long).then(
-        (response) => {
-          const address = response.results[0].formatted_address;
-          console.log(address);
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
+  const [state,setState]=useState("");
+    var requestOptions = {
+      method: 'GET',
+    };
+    
+    fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${long}&apiKey=685f04bd1e7443348d845bf57afff5fc`, requestOptions)
+      .then(response => response.json())
+      .then(result => setState(result.features[0].properties.state))
+      .catch(error => console.log('error', error));
   return (
     <Box>
-      {/* <iframe
+      <iframe
         width="45%"
         height="300"
-        style="border:0"
         loading="lazy"
         allowfullscreen
-        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDHhgsc3KucyNa3_56r8YbhquY5WWs0EDI&q=Space+Needle,Seattle+WA"
+        src= {`https://www.google.com/maps/embed/v1/place?key=AIzaSyDHhgsc3KucyNa3_56r8YbhquY5WWs0EDI&q=${state}`}
         id="map"
-      ></iframe> */}
+      ></iframe>
     </Box>
   );
 };

@@ -1,9 +1,12 @@
 
 import './App.css';
 import Nav from './components/nav';
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from 'react';
 import {Map}from "./components/map";
+import { Savelat, Savelong } from './Redux/action';
 function App() {
+  const dispatch = useDispatch();
   const [lat,setLat]=useState(null);
   const [long,setLong]=useState(null);
   const [error,setError]=useState("");
@@ -16,6 +19,8 @@ function App() {
       geolocationAPI.getCurrentPosition((position) => {
         const { coords } = position;
         setLat(coords.latitude);
+        dispatch(Savelat(coords.latitude))
+        dispatch(Savelong(coords.longitude))
         setLong(coords.longitude);
       }, (error) => {
         setError('Something went wrong getting your location!')
