@@ -1,16 +1,18 @@
 
 import './App.css';
 import Nav from './components/nav';
+import { Box } from '@chakra-ui/react';
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from 'react';
 import {Map}from "./components/map";
-import { Savelat, Savelong } from './Redux/action';
+import { Fetchdata, FetchWather, Savelat, Savelong } from './Redux/action';
+import { Place } from './components/Place';
 function App() {
   const dispatch = useDispatch();
-  const [lat,setLat]=useState(null);
-  const [long,setLong]=useState(null);
+  const status=useSelector((store)=>store.LocationData.nav)
   const [error,setError]=useState("");
   const [num,setNum]=useState(0);
+  const [sep,setSep]=useState(false);
   const geolocationAPI = navigator.geolocation;
   const getUserCoordinates = () => {
     if (!geolocationAPI) {
@@ -18,10 +20,12 @@ function App() {
     } else {
       geolocationAPI.getCurrentPosition((position) => {
         const { coords } = position;
-        setLat(coords.latitude);
+       
         dispatch(Savelat(coords.latitude))
         dispatch(Savelong(coords.longitude))
-        setLong(coords.longitude);
+        dispatch(Fetchdata(coords.latitude,coords.longitude))
+        dispatch(FetchWather(coords.latitude,coords.longitude))
+        setSep(true)
       }, (error) => {
         setError('Something went wrong getting your location!')
       })
@@ -31,14 +35,17 @@ function App() {
     if(num===0){
       getUserCoordinates();
       setNum((num)=>num+1);
+      
     }
+    
   })
-  console.log(lat,long)
+  
   return (
     <div className="App">
-     {/* <Nav/> */}
-      <Map lat={lat} long={long} />
-
+     <Nav/>
+     {!status &&<Box fontSize={"24px"}>loading...</Box>}
+     {status&&<Map/>}
+      {/* <Place/> */}
     </div>
   );
 }

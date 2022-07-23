@@ -8,13 +8,19 @@ import {
   Input
 } from "@chakra-ui/react";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-
+import { useSelector,useDispatch } from "react-redux";
+import { Setnav } from "../Redux/action";
 export default function Nav() {
   const { colorMode, toggleColorMode } = useColorMode();
-  
+  const store=useSelector((store)=>store.LocationData.addressdetail)
+  const dispatch=useDispatch();
+   if(store!=""){
+    dispatch(Setnav())
+   }
+   
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4} marginBottom={"15px"}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <Box>Logo</Box>
           <Box><Input  type="text" placeholder="search city name"/></Box>
