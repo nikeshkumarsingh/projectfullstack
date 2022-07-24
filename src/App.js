@@ -1,7 +1,7 @@
 
 import './App.css';
 import Nav from './components/nav';
-import { Box } from '@chakra-ui/react';
+import {Box}from "@chakra-ui/react"
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from 'react';
 import {Map}from "./components/map";

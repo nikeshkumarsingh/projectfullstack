@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Fetchstatelist } from "../Redux/action";
 import { Place } from "./Place";
+import { Weather } from "./weather";
 
 export const Map = () => {
   const store=useSelector((store)=>store.LocationData)
@@ -23,6 +24,7 @@ export const Map = () => {
   console.log(store)
   return (
     <Box>
+      <Box>
       <AspectRatio maxW='460px' ratio={20/10} >
         <iframe
           width="45%"
@@ -33,6 +35,8 @@ export const Map = () => {
           id="map"
         ></iframe>
       </AspectRatio>
+      <Weather/>
+      </Box>
       {state!=""&&<Place state={state}/>}
     </Box>
   );
